@@ -9,6 +9,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class USphereComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
@@ -28,6 +29,10 @@ class ABatteryCollectorCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
 	
+	/** Collection sphere */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	USphereComponent* CollectionSphere;
+
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
@@ -44,6 +49,10 @@ class ABatteryCollectorCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	/** Look CollectAction */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* CollectAction;
+
 public:
 	ABatteryCollectorCharacter();
 	
@@ -55,7 +64,10 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
+
+	/** Called when collect pickups */
+	//UFUNCTION(BlueprintCallable, Category = "Pickups")
+	void CollectPickups(const FInputActionValue& Value);
 
 protected:
 	// APawn interface
@@ -69,5 +81,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	/** Returns USphereComponent subobject **/
+	FORCEINLINE class USphereComponent* GetSphereComponent() const { return CollectionSphere; }
 };
 

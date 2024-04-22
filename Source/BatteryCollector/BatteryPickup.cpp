@@ -10,3 +10,8 @@ ABatteryPickup::ABatteryPickup()
 	mesh->SetSimulatePhysics(true);
 }
 
+void ABatteryPickup::WasCollected_Implementation()
+{
+	Super::WasCollected_Implementation();
+	Destroy();
+}

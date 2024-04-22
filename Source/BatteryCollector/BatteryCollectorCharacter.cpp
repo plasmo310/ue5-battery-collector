@@ -4,12 +4,14 @@
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Pickup.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -50,6 +52,11 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	// Create the collection sphere
+	CollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
+	CollectionSphere->SetupAttachment(RootComponent);
+	CollectionSphere->SetSphereRadius(200.0f);
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -86,6 +93,9 @@ void ABatteryCollectorCharacter::SetupPlayerInputComponent(UInputComponent* Play
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABatteryCollectorCharacter::Look);
+
+		// Collect
+		EnhancedInputComponent->BindAction(CollectAction, ETriggerEvent::Triggered, this, &ABatteryCollectorCharacter::CollectPickups);
 	}
 	else
 	{
@@ -126,5 +136,27 @@ void ABatteryCollectorCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void ABatteryCollectorCharacter::CollectPickups(const FInputActionValue& Value)
+{
+	// TODO print debug message
+	FString PickupDebugString = GetName();
+	UE_LOG(LogClass, Log, TEXT("CollectPickups %s"), *PickupDebugString);
+
+	// get overlap actors
+	TArray<AActor*> CollectedActors;
+	CollectionSphere->GetOverlappingActors(CollectedActors);
+
+	// collected pickups
+	for (int32 i = 0; i < CollectedActors.Num(); i++)
+	{
+		APickup* const TestPickup = Cast<APickup>(CollectedActors[i]);
+		if (TestPickup && !TestPickup->IsPendingKill() && TestPickup->IsActive())
+		{
+			TestPickup->WasCollected();
+			TestPickup->SetActive(false);
+		}
 	}
 }
