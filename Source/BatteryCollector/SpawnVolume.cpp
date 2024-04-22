@@ -12,12 +12,19 @@ ASpawnVolume::ASpawnVolume()
 	// Create the Box Component
 	WhereToSpawn = CreateDefaultSubobject<UBoxComponent>(TEXT("WhereToSpawn"));
 	RootComponent = WhereToSpawn;
+
+	// Set spawm delay
+	MinSpawnDelay = 1.0f;
+	MaxSpawnDelay = 4.5f;
 }
 
 void ASpawnVolume::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// Start Spawn Pickup.
+	CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
+	GetWorldTimerManager().SetTimer(SpawnTimer, this, &ASpawnVolume::SpawnPickup, CurrentSpawnDelay, false);
 }
 
 void ASpawnVolume::Tick(float DeltaTime)
@@ -65,4 +72,8 @@ void ASpawnVolume::SpawnPickup()
 	FVector SpawnLocation = GetRandomPointInVolume();
 	FRotator SpawnRotation = GetRandomRotator();
 	APickup* const SpawnedPickup = World->SpawnActor<APickup>(WhatToSpawn, SpawnLocation, SpawnRotation, SpawnParams);
+
+	// Next Spawn Pickup.
+	CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
+	GetWorldTimerManager().SetTimer(SpawnTimer, this, &ASpawnVolume::SpawnPickup, CurrentSpawnDelay, false);
 }
