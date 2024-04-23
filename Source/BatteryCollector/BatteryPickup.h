@@ -17,6 +17,15 @@ class BATTERYCOLLECTOR_API ABatteryPickup : public APickup
 public:
 	ABatteryPickup();
 
+	/** override collected process */
 	void WasCollected_Implementation() override;
+
+	/** Return amount of power */
+	float GetPower();
+
+protected:
+	/** amount of power */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "trye"))
+	float BatteryPower;
 
 };

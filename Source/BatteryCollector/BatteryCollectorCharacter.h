@@ -66,8 +66,17 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	/** Called when collect pickups */
-	//UFUNCTION(BlueprintCallable, Category = "Pickups")
+	UFUNCTION(BlueprintCallable, Category = "Pickups")
 	void CollectPickups(const FInputActionValue& Value);
+
+	/** init character power */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
+	float InitialPower = 2000.f;
+
+private:
+	/** current character power */
+	UPROPERTY(VisibleAnywhere, Category = "Power")
+	float CurrentPower;
 
 protected:
 	// APawn interface
@@ -83,5 +92,18 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	/** Returns USphereComponent subobject **/
 	FORCEINLINE class USphereComponent* GetSphereComponent() const { return CollectionSphere; }
+
+	/** Return init character power */
+	UFUNCTION(BlueprintPure, Category = "Power")
+	float GetInitialPower();
+
+	/** Return current character power */
+	UFUNCTION(BlueprintPure, Category = "Power")
+	float GetCurrentPower();
+
+	/** update current power */
+	UFUNCTION(BlueprintCallable, Category = "Power")
+	void UpdatePower(float PowerChange);
+
 };
 

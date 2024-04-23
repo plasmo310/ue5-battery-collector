@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Pickup.h"
+#include "BatteryPickup.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -59,6 +60,9 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	// set character power
+	CurrentPower = InitialPower;
 }
 
 void ABatteryCollectorCharacter::BeginPlay()
@@ -149,6 +153,8 @@ void ABatteryCollectorCharacter::CollectPickups(const FInputActionValue& Value)
 	TArray<AActor*> CollectedActors;
 	CollectionSphere->GetOverlappingActors(CollectedActors);
 
+	float CollectedPower = 0;
+
 	// collected pickups
 	for (int32 i = 0; i < CollectedActors.Num(); i++)
 	{
@@ -157,6 +163,34 @@ void ABatteryCollectorCharacter::CollectPickups(const FInputActionValue& Value)
 		{
 			TestPickup->WasCollected();
 			TestPickup->SetActive(false);
+
+			// incriment battery power
+			ABatteryPickup* const TestBattery = Cast<ABatteryPickup>(TestPickup);
+			if (TestBattery)
+			{
+				CollectedPower += TestBattery->GetPower();
+			}
 		}
 	}
+
+	// set collected power
+	if (CollectedPower > 0)
+	{
+		UpdatePower(CollectedPower);
+	}
+}
+
+float ABatteryCollectorCharacter::GetInitialPower()
+{
+	return InitialPower;
+}
+
+float ABatteryCollectorCharacter::GetCurrentPower()
+{
+	return CurrentPower;
+}
+
+void ABatteryCollectorCharacter::UpdatePower(float PowerChange)
+{
+	CurrentPower += PowerChange;
 }
