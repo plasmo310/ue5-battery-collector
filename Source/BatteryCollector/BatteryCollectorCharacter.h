@@ -70,8 +70,20 @@ protected:
 	void CollectPickups(const FInputActionValue& Value);
 
 	/** init character power */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 	float InitialPower = 2000.f;
+
+	/** multiply for character speed */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+	float SpeedFactor = 0.75f;
+
+	/** speed when power level=0 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
+	float BaseSpeed = 10.0f;
+
+	/** play effect when power change */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Power")
+	void PowerChangeEffect();
 
 private:
 	/** current character power */

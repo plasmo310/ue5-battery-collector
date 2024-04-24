@@ -193,4 +193,11 @@ float ABatteryCollectorCharacter::GetCurrentPower()
 void ABatteryCollectorCharacter::UpdatePower(float PowerChange)
 {
 	CurrentPower += PowerChange;
+
+	// change speed based on power
+	auto characterMovement = GetCharacterMovement();
+	characterMovement->MaxWalkSpeed = BaseSpeed + SpeedFactor * CurrentPower;
+
+	// play effect
+	PowerChangeEffect();
 }
