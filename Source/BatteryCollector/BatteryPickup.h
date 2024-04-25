@@ -20,12 +20,12 @@ public:
 	/** override collected process */
 	void WasCollected_Implementation() override;
 
-	/** Return amount of power */
+	/** Return battery power */
 	float GetPower();
 
 protected:
-	/** amount of power */
+	/** battery power */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "trye"))
-	float BatteryPower;
+	float BatteryPower = 300.0f;
 
 };

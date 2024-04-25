@@ -8,9 +8,6 @@ ABatteryPickup::ABatteryPickup()
 	// enable physics.
 	auto mesh = GetMesh();
 	mesh->SetSimulatePhysics(true);
-
-	// set power.
-	BatteryPower = 150.0f;
 }
 
 void ABatteryPickup::WasCollected_Implementation()
