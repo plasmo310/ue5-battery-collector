@@ -23,6 +23,9 @@ void ABatteryCollectorGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// set playing state.
+	SetCurrentState(EBatteryPlayState::EPlaying);
+
 	// create widget.
 	if (HUDWidgetClass != nullptr)
 	{
@@ -38,19 +41,47 @@ void ABatteryCollectorGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (GetCurrentState() != EBatteryPlayState::EPlaying)
+	{
+		return;
+	}
+
 	// get player character.
 	auto playerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 	ABatteryCollectorCharacter* playerCharacter = Cast<ABatteryCollectorCharacter>(playerPawn);
 
-	// update player power.
-	if (playerCharacter && playerCharacter->GetCurrentPower() > 0)
+	if (!playerCharacter)
+	{
+		return;
+	}
+
+	// check player power
+	if (playerCharacter->GetCurrentPower() > PowerToWin)
+	{
+		SetCurrentState(EBatteryPlayState::EWin);
+	}
+	else if (playerCharacter->GetCurrentPower() > 0)
 	{
 		auto powerChange = -DeltaTime * DecayRate * (playerCharacter->GetInitialPower());
 		playerCharacter->UpdatePower(powerChange);
+	}
+	else
+	{
+		SetCurrentState(EBatteryPlayState::EGameOver);
 	}
 }
 
 float ABatteryCollectorGameMode::GetPowerToWin() const
 {
 	return PowerToWin;
+}
+
+EBatteryPlayState ABatteryCollectorGameMode::GetCurrentState() const
+{
+	return CurrentState;
+}
+
+void ABatteryCollectorGameMode::SetCurrentState(EBatteryPlayState state)
+{
+	CurrentState = state;
 }

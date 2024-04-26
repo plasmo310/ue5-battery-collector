@@ -6,6 +6,15 @@
 #include "GameFramework/GameModeBase.h"
 #include "BatteryCollectorGameMode.generated.h"
 
+UENUM(BlueprintType)
+enum class EBatteryPlayState : uint8
+{
+	EPlaying,
+	EGameOver,
+	EWin,
+	EUnknown,
+};
+
 UCLASS(minimalapi)
 class ABatteryCollectorGameMode : public AGameModeBase
 {
@@ -21,6 +30,13 @@ public:
 	/** Returns need power win the game */
 	UFUNCTION(BlueprintPure, Category = "Power")
 	float GetPowerToWin() const;
+
+	/** Returns current state */
+	UFUNCTION(BlueprintPure, Category = "Power")
+	EBatteryPlayState GetCurrentState() const;
+
+	/** Set playing state */
+	void SetCurrentState(EBatteryPlayState state);
 
 protected:
 	/** lose player power rate */
@@ -38,5 +54,9 @@ protected:
 	/** The instance of the Widget */
 	UPROPERTY()
 	class UUserWidget* CurrentWidget;
+
+private:
+	/** Keeps track of the current playing state */
+	EBatteryPlayState CurrentState;
 
 };
