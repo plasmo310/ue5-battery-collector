@@ -5,6 +5,8 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "SpawnVolume.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 ABatteryCollectorGameMode::ABatteryCollectorGameMode()
 {
@@ -22,6 +24,19 @@ ABatteryCollectorGameMode::ABatteryCollectorGameMode()
 void ABatteryCollectorGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// find all SpawnVolume actors.
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnVolume::StaticClass(), FoundActors);
+
+	for (auto Actor : FoundActors)
+	{
+		ASpawnVolume* SpawnVolumeActor = Cast<ASpawnVolume>(Actor);
+		if (SpawnVolumeActor)
+		{
+			SpawnVolumeActors.AddUnique(SpawnVolumeActor);
+		}
+	}
 
 	// set playing state.
 	SetCurrentState(EBatteryPlayState::EPlaying);
@@ -84,4 +99,60 @@ EBatteryPlayState ABatteryCollectorGameMode::GetCurrentState() const
 void ABatteryCollectorGameMode::SetCurrentState(EBatteryPlayState state)
 {
 	CurrentState = state;
+	HandleNewState(state);
+}
+
+void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState state)
+{
+	switch (state)
+	{
+	case EBatteryPlayState::EPlaying:
+	{
+		// spawn volumes active
+		for (ASpawnVolume* volume : SpawnVolumeActors)
+		{
+			volume->SetSpawningActive(true);
+		}
+		break;
+	}
+	case EBatteryPlayState::EWin:
+	{
+		// spawn volumes inactive
+		for (ASpawnVolume* volume : SpawnVolumeActors)
+		{
+			volume->SetSpawningActive(false);
+		}
+		break;
+	}
+	case EBatteryPlayState::EGameOver:
+	{
+		// spawn volumes inactive
+		for (ASpawnVolume* volume : SpawnVolumeActors)
+		{
+			volume->SetSpawningActive(false);
+		}
+		// disable input player
+		APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
+		if (playerController)
+		{
+			// playerController->DisableInput(playerController);
+			playerController->SetCinematicMode(true, false, false, true, true);
+		}
+		// break ragdoll player
+		ACharacter* character = UGameplayStatics::GetPlayerCharacter(this, 0);
+		if (character)
+		{
+			//APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
+			//if (playerController)
+			//{
+			//	character->DisableInput(playerController);
+			//}
+			character->GetMesh()->SetSimulatePhysics(true);
+			character->GetMovementComponent()->MovementState.bCanJump = false;
+		}
+		break;
+	}
+	case EBatteryPlayState::EUnknown:
+		break;
+	}
 }

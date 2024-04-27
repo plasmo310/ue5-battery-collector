@@ -59,4 +59,9 @@ private:
 	/** Keeps track of the current playing state */
 	EBatteryPlayState CurrentState;
 
+	TArray<class ASpawnVolume*> SpawnVolumeActors;
+
+	/** handle change state */
+	void HandleNewState(EBatteryPlayState state);
+
 };

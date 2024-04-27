@@ -31,6 +31,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Spawning")
 	FRotator GetRandomRotator();
 
+	// Set Active
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	void SetSpawningActive(bool isShouldSpawn);
+
 protected:
 	// Spawn Pickup Actor
 	UPROPERTY(EditAnywhere, Category = "Spawning")

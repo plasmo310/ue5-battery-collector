@@ -21,10 +21,6 @@ ASpawnVolume::ASpawnVolume()
 void ASpawnVolume::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// Start Spawn Pickup.
-	CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
-	GetWorldTimerManager().SetTimer(SpawnTimer, this, &ASpawnVolume::SpawnPickup, CurrentSpawnDelay, false);
 }
 
 void ASpawnVolume::Tick(float DeltaTime)
@@ -48,6 +44,21 @@ FRotator ASpawnVolume::GetRandomRotator()
 	SpawnRotation.Pitch = FMath::FRand() * 360.0f;
 	SpawnRotation.Roll = FMath::FRand() * 360.0f;
 	return SpawnRotation;
+}
+
+void ASpawnVolume::SetSpawningActive(bool isShouldSpawn)
+{
+	if (isShouldSpawn)
+	{
+		// Start Spawn Pickup.
+		CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
+		GetWorldTimerManager().SetTimer(SpawnTimer, this, &ASpawnVolume::SpawnPickup, CurrentSpawnDelay, false);
+	}
+	else
+	{
+		// Clear Timer.
+		GetWorldTimerManager().ClearTimer(SpawnTimer);
+	}
 }
 
 void ASpawnVolume::SpawnPickup()
