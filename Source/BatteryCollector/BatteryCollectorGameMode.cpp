@@ -156,3 +156,4 @@ void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState state)
 		break;
 	}
 }
+

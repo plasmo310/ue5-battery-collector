@@ -75,7 +75,7 @@ protected:
 
 	/** multiply for character speed */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
-	float SpeedFactor = 0.75f;
+	float SpeedFactor = 0.25f;
 
 	/** speed when power level=0 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
