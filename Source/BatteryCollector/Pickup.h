@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
 #include "Pickup.generated.h"
 
 
@@ -15,36 +16,32 @@ class BATTERYCOLLECTOR_API APickup : public AActor
 public:	
 	APickup();
 
-protected:
 	virtual void BeginPlay() override;
 
-public:	
 	virtual void Tick(float DeltaTime) override;
 
-	// Return mesh for pickup
-	FORCEINLINE class UStaticMeshComponent* GetMesh() const { return PickupMesh; }
+	/** Returns mesh for pickup */
+	FORCEINLINE UStaticMeshComponent* GetMesh() const { return PickupMesh; }
 
-	// BPèÉêàä÷êî
-	// Return pickup is active
+	/** Returns pickup is active */
 	UFUNCTION(BlueprintPure, Category = "Pickup")
 	bool IsActive();
 
-	// BPä÷êî
-	// Set pickup active
+	/** Set pickup active */
 	UFUNCTION(BlueprintCallable, Category = "Pickup")
 	void SetActive(bool NewPickupState);
 
-	// When the pickup is collected event
+	/** When the pickup is collected event */
 	UFUNCTION(BlueprintNativeEvent)
 	void WasCollected();
 	virtual void WasCollected_Implementation();
 
 protected:
-	// pickup enable flag
+	/** Flag pickup active */
 	bool bIsActive;
 
 private:
-	// Static mesh for pickup
+	/** Static mesh for pickup */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess="true"))
-	class UStaticMeshComponent* PickupMesh;
+	UStaticMeshComponent* PickupMesh;
 };

@@ -69,24 +69,24 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Pickups")
 	void CollectPickups(const FInputActionValue& Value);
 
-	/** init character power */
+	/** Init character power */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 	float InitialPower = 2000.f;
 
-	/** multiply for character speed */
+	/** Multiply for character speed */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 	float SpeedFactor = 0.25f;
 
-	/** speed when power level=0 */
+	/** Speed when power level=0 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 	float BaseSpeed = 10.0f;
 
-	/** play effect when power change */
+	/** Play effect when power change */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Power")
 	void PowerChangeEffect();
 
 private:
-	/** current character power */
+	/** Current character power */
 	UPROPERTY(VisibleAnywhere, Category = "Power")
 	float CurrentPower;
 
@@ -105,17 +105,16 @@ public:
 	/** Returns USphereComponent subobject **/
 	FORCEINLINE class USphereComponent* GetSphereComponent() const { return CollectionSphere; }
 
-	/** Return init character power */
+	/** Returns init character power */
 	UFUNCTION(BlueprintPure, Category = "Power")
 	float GetInitialPower();
 
-	/** Return current character power */
+	/** Returns current character power */
 	UFUNCTION(BlueprintPure, Category = "Power")
 	float GetCurrentPower();
 
-	/** update current power */
+	/** Change current power */
 	UFUNCTION(BlueprintCallable, Category = "Power")
-	void UpdatePower(float PowerChange);
+	void ChangePower(float PowerChange);
 
 };
-

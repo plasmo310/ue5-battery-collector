@@ -66,7 +66,6 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 }
 
 void ABatteryCollectorCharacter::BeginPlay()
-void ABatteryCollectorCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
@@ -146,10 +145,6 @@ void ABatteryCollectorCharacter::Look(const FInputActionValue& Value)
 
 void ABatteryCollectorCharacter::CollectPickups(const FInputActionValue& Value)
 {
-	// TODO print debug message
-	FString PickupDebugString = GetName();
-	UE_LOG(LogClass, Log, TEXT("CollectPickups %s"), *PickupDebugString);
-
 	// get overlap actors
 	TArray<AActor*> CollectedActors;
 	CollectionSphere->GetOverlappingActors(CollectedActors);
@@ -177,7 +172,7 @@ void ABatteryCollectorCharacter::CollectPickups(const FInputActionValue& Value)
 	// set collected power
 	if (CollectedPower > 0)
 	{
-		UpdatePower(CollectedPower);
+		ChangePower(CollectedPower);
 	}
 }
 
@@ -191,7 +186,7 @@ float ABatteryCollectorCharacter::GetCurrentPower()
 	return CurrentPower;
 }
 
-void ABatteryCollectorCharacter::UpdatePower(float PowerChange)
+void ABatteryCollectorCharacter::ChangePower(float PowerChange)
 {
 	CurrentPower += PowerChange;
 

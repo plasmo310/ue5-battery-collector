@@ -5,13 +5,13 @@
 
 APickup::APickup()
 {
- 	// Disable Tick function.
+ 	// disable Tick function.
 	PrimaryActorTick.bCanEverTick = false;
 
 	// pickup start active
 	bIsActive = true;
 
-	// Create the static mesh.
+	// create the static mesh.
 	PickupMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PickupMesh"));
 	RootComponent = PickupMesh;
 }

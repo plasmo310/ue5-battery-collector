@@ -14,50 +14,50 @@ class BATTERYCOLLECTOR_API ASpawnVolume : public AActor
 public:	
 	ASpawnVolume();
 
-protected:
+public:
 	virtual void BeginPlay() override;
 
-public:	
 	virtual void Tick(float DeltaTime) override;
 
-	// Return WhereToSpawn
+	/** Returns WhereToSpawn */
 	FORCEINLINE class UBoxComponent* GetWhereToSpawn() const { return WhereToSpawn; }
 
-	// Return Random Point From WhereToSpawn
+	/** Returns Random Point From WhereToSpawn */
 	UFUNCTION(BlueprintPure, Category = "Spawning")
 	FVector GetRandomPointInVolume();
 
-	// Return Random Point From WhereToSpawn
+	/** Returns Random Point From WhereToSpawn */
 	UFUNCTION(BlueprintPure, Category = "Spawning")
 	FRotator GetRandomRotator();
 
-	// Set Active
+	/** Set Active */
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void SetSpawningActive(bool isShouldSpawn);
 
 protected:
-	// Spawn Pickup Actor
+	/** Spawn Pickup Actor */
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	TSubclassOf <class APickup> WhatToSpawn;
 
+	/** Spawn TimerHandle */
 	FTimerHandle SpawnTimer;
 
-	// Min spawn delay
+	/** Min spawn delay */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float MinSpawnDelay;
 
-	// Max spawn delay
+	/** Max spawn delay */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawning")
 	float MaxSpawnDelay;
 
 private:
-	// Spawn Pickup Area
+	/** Spawn Pickup Area */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* WhereToSpawn;
 
-	// Spawn New Pickup
+	/** Spawn New Pickup */
 	void SpawnPickup();
 
-	// Current spawn delay
+	/** Current spawn delay */
 	float CurrentSpawnDelay;
 };

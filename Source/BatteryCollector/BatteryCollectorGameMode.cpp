@@ -78,7 +78,7 @@ void ABatteryCollectorGameMode::Tick(float DeltaTime)
 	else if (playerCharacter->GetCurrentPower() > 0)
 	{
 		auto powerChange = -DeltaTime * DecayRate * (playerCharacter->GetInitialPower());
-		playerCharacter->UpdatePower(powerChange);
+		playerCharacter->ChangePower(powerChange);
 	}
 	else
 	{
@@ -135,18 +135,12 @@ void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState state)
 		APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
 		if (playerController)
 		{
-			// playerController->DisableInput(playerController);
 			playerController->SetCinematicMode(true, false, false, true, true);
 		}
 		// break ragdoll player
 		ACharacter* character = UGameplayStatics::GetPlayerCharacter(this, 0);
 		if (character)
 		{
-			//APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
-			//if (playerController)
-			//{
-			//	character->DisableInput(playerController);
-			//}
 			character->GetMesh()->SetSimulatePhysics(true);
 			character->GetMovementComponent()->MovementState.bCanJump = false;
 		}
@@ -156,4 +150,3 @@ void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState state)
 		break;
 	}
 }
-

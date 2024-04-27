@@ -12,6 +12,7 @@ ABatteryPickup::ABatteryPickup()
 
 void ABatteryPickup::WasCollected_Implementation()
 {
+	// destroy when colelcted.
 	Super::WasCollected_Implementation();
 	Destroy();
 }
@@ -20,4 +21,3 @@ float ABatteryPickup::GetPower()
 {
 	return BatteryPower;
 }
-

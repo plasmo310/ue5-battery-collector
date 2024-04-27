@@ -39,11 +39,11 @@ public:
 	void SetCurrentState(EBatteryPlayState state);
 
 protected:
-	/** lose player power rate */
+	/** Lose player power rate */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 	float DecayRate = 0.05f;
 
-	/** need power win the game */
+	/** Need power win the game */
 	UPROPERTY(EditDefaultsOnly, Category = "Power", Meta = (BlueprintProtected = "true"))
 	float PowerToWin = 3000.0f;
 
@@ -59,6 +59,7 @@ private:
 	/** Keeps track of the current playing state */
 	EBatteryPlayState CurrentState;
 
+	/** Spawn Volumes */
 	TArray<class ASpawnVolume*> SpawnVolumeActors;
 
 	/** handle change state */

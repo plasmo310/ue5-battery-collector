@@ -17,7 +17,7 @@ class BATTERYCOLLECTOR_API ABatteryPickup : public APickup
 public:
 	ABatteryPickup();
 
-	/** override collected process */
+	/** Collected process */
 	void WasCollected_Implementation() override;
 
 	/** Return battery power */
