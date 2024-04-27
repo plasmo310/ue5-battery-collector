@@ -62,23 +62,23 @@ void ABatteryCollectorGameMode::Tick(float DeltaTime)
 	}
 
 	// get player character.
-	auto playerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-	ABatteryCollectorCharacter* playerCharacter = Cast<ABatteryCollectorCharacter>(playerPawn);
+	const auto PlayerPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+	ABatteryCollectorCharacter* PlayerCharacter = Cast<ABatteryCollectorCharacter>(PlayerPawn);
 
-	if (!playerCharacter)
+	if (!PlayerCharacter)
 	{
 		return;
 	}
 
 	// check player power
-	if (playerCharacter->GetCurrentPower() > PowerToWin)
+	if (PlayerCharacter->GetCurrentPower() > PowerToWin)
 	{
 		SetCurrentState(EBatteryPlayState::EWin);
 	}
-	else if (playerCharacter->GetCurrentPower() > 0)
+	else if (PlayerCharacter->GetCurrentPower() > 0)
 	{
-		auto powerChange = -DeltaTime * DecayRate * (playerCharacter->GetInitialPower());
-		playerCharacter->ChangePower(powerChange);
+		const auto PowerChange = -DeltaTime * DecayRate * (PlayerCharacter->GetInitialPower());
+		PlayerCharacter->ChangePower(PowerChange);
 	}
 	else
 	{
@@ -102,9 +102,9 @@ void ABatteryCollectorGameMode::SetCurrentState(EBatteryPlayState state)
 	HandleNewState(state);
 }
 
-void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState state)
+void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState State)
 {
-	switch (state)
+	switch (State)
 	{
 	case EBatteryPlayState::EPlaying:
 	{

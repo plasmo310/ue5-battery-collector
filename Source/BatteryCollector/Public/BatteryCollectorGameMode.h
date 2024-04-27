@@ -63,6 +63,6 @@ private:
 	TArray<class ASpawnVolume*> SpawnVolumeActors;
 
 	/** handle change state */
-	void HandleNewState(EBatteryPlayState state);
+	void HandleNewState(EBatteryPlayState State);
 
 };
