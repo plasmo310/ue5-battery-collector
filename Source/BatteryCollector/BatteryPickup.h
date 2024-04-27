@@ -18,10 +18,10 @@ public:
 	ABatteryPickup();
 
 	/** Collected process */
-	void WasCollected_Implementation() override;
+	virtual void WasCollected_Implementation() override;
 
 	/** Return battery power */
-	float GetPower();
+	float GetPower() const;
 
 protected:
 	/** battery power */

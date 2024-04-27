@@ -13,8 +13,7 @@ ASpawnVolume::ASpawnVolume()
 	WhereToSpawn = CreateDefaultSubobject<UBoxComponent>(TEXT("WhereToSpawn"));
 	RootComponent = WhereToSpawn;
 
-	// set spawm delay.
-	MinSpawnDelay = 1.0f;
+	// set spawn = 1.0f;
 	MaxSpawnDelay = 4.5f;
 }
 
@@ -29,11 +28,11 @@ void ASpawnVolume::Tick(float DeltaTime)
 
 }
 
-FVector ASpawnVolume::GetRandomPointInVolume()
+FVector ASpawnVolume::GetRandomPointInVolume() const
 {
 	// get random point from WhereToSpawn.
-	FVector SpawnOrigin = WhereToSpawn->Bounds.Origin;
-	FVector SpawnExtend = WhereToSpawn->Bounds.BoxExtent;
+	const FVector SpawnOrigin = WhereToSpawn->Bounds.Origin;
+	const FVector SpawnExtend = WhereToSpawn->Bounds.BoxExtent;
 	return UKismetMathLibrary::RandomPointInBoundingBox(SpawnOrigin, SpawnExtend);
 }
 
@@ -46,9 +45,9 @@ FRotator ASpawnVolume::GetRandomRotator()
 	return SpawnRotation;
 }
 
-void ASpawnVolume::SetSpawningActive(bool isShouldSpawn)
+void ASpawnVolume::SetSpawningActive(const bool bShouldSpawn)
 {
-	if (isShouldSpawn)
+	if (bShouldSpawn)
 	{
 		// start spawn pickup.
 		CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
@@ -63,7 +62,7 @@ void ASpawnVolume::SetSpawningActive(bool isShouldSpawn)
 
 void ASpawnVolume::SpawnPickup()
 {
-	if (WhatToSpawn == NULL)
+	if (WhatToSpawn == nullptr)
 	{
 		return;
 	}
@@ -80,9 +79,9 @@ void ASpawnVolume::SpawnPickup()
 	SpawnParams.Instigator = GetInstigator();
 
 	// spawn pickup.
-	FVector SpawnLocation = GetRandomPointInVolume();
-	FRotator SpawnRotation = GetRandomRotator();
-	APickup* const SpawnedPickup = World->SpawnActor<APickup>(WhatToSpawn, SpawnLocation, SpawnRotation, SpawnParams);
+	const FVector SpawnLocation = GetRandomPointInVolume();
+	const FRotator SpawnRotation = GetRandomRotator();
+	World->SpawnActor<APickup>(WhatToSpawn, SpawnLocation, SpawnRotation, SpawnParams);
 
 	// next loop spawn pickup.
 	CurrentSpawnDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);

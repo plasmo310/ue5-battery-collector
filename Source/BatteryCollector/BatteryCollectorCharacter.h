@@ -107,14 +107,14 @@ public:
 
 	/** Returns init character power */
 	UFUNCTION(BlueprintPure, Category = "Power")
-	float GetInitialPower();
+	float GetInitialPower() const;
 
 	/** Returns current character power */
 	UFUNCTION(BlueprintPure, Category = "Power")
-	float GetCurrentPower();
+	float GetCurrentPower() const;
 
 	/** Change current power */
 	UFUNCTION(BlueprintCallable, Category = "Power")
-	void ChangePower(float PowerChange);
+	void ChangePower(float changePower);
 
 };

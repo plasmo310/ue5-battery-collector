@@ -12,7 +12,7 @@ ABatteryCollectorGameMode::ABatteryCollectorGameMode()
 {
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
-	if (PlayerPawnBPClass.Class != NULL)
+	if (PlayerPawnBPClass.Class != nullptr)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
@@ -109,40 +109,40 @@ void ABatteryCollectorGameMode::HandleNewState(EBatteryPlayState state)
 	case EBatteryPlayState::EPlaying:
 	{
 		// spawn volumes active
-		for (ASpawnVolume* volume : SpawnVolumeActors)
+		for (ASpawnVolume* Volume : SpawnVolumeActors)
 		{
-			volume->SetSpawningActive(true);
+			Volume->SetSpawningActive(true);
 		}
 		break;
 	}
 	case EBatteryPlayState::EWin:
 	{
 		// spawn volumes inactive
-		for (ASpawnVolume* volume : SpawnVolumeActors)
+		for (ASpawnVolume* Volume : SpawnVolumeActors)
 		{
-			volume->SetSpawningActive(false);
+			Volume->SetSpawningActive(false);
 		}
 		break;
 	}
 	case EBatteryPlayState::EGameOver:
 	{
 		// spawn volumes inactive
-		for (ASpawnVolume* volume : SpawnVolumeActors)
+		for (ASpawnVolume* Volume : SpawnVolumeActors)
 		{
-			volume->SetSpawningActive(false);
+			Volume->SetSpawningActive(false);
 		}
 		// disable input player
-		APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
-		if (playerController)
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+		if (PlayerController)
 		{
-			playerController->SetCinematicMode(true, false, false, true, true);
+			PlayerController->SetCinematicMode(true, false, false, true, true);
 		}
 		// break ragdoll player
-		ACharacter* character = UGameplayStatics::GetPlayerCharacter(this, 0);
-		if (character)
+		ACharacter* Player = UGameplayStatics::GetPlayerCharacter(this, 0);
+		if (Player)
 		{
-			character->GetMesh()->SetSimulatePhysics(true);
-			character->GetMovementComponent()->MovementState.bCanJump = false;
+			Player->GetMesh()->SetSimulatePhysics(true);
+			Player->GetMovementComponent()->MovementState.bCanJump = false;
 		}
 		break;
 	}

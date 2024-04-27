@@ -6,7 +6,7 @@
 ABatteryPickup::ABatteryPickup()
 {
 	// enable physics.
-	auto mesh = GetMesh();
+	const auto mesh = GetMesh();
 	mesh->SetSimulatePhysics(true);
 }
 
@@ -17,7 +17,7 @@ void ABatteryPickup::WasCollected_Implementation()
 	Destroy();
 }
 
-float ABatteryPickup::GetPower()
+float ABatteryPickup::GetPower() const
 {
 	return BatteryPower;
 }

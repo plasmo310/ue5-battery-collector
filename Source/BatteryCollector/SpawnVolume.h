@@ -24,15 +24,15 @@ public:
 
 	/** Returns Random Point From WhereToSpawn */
 	UFUNCTION(BlueprintPure, Category = "Spawning")
-	FVector GetRandomPointInVolume();
+	FVector GetRandomPointInVolume() const;
 
 	/** Returns Random Point From WhereToSpawn */
 	UFUNCTION(BlueprintPure, Category = "Spawning")
-	FRotator GetRandomRotator();
+	static FRotator GetRandomRotator();
 
 	/** Set Active */
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
-	void SetSpawningActive(bool isShouldSpawn);
+	void SetSpawningActive(bool bShouldSpawn);
 
 protected:
 	/** Spawn Pickup Actor */

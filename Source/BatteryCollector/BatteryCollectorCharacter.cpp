@@ -176,19 +176,19 @@ void ABatteryCollectorCharacter::CollectPickups(const FInputActionValue& Value)
 	}
 }
 
-float ABatteryCollectorCharacter::GetInitialPower()
+float ABatteryCollectorCharacter::GetInitialPower() const
 {
 	return InitialPower;
 }
 
-float ABatteryCollectorCharacter::GetCurrentPower()
+float ABatteryCollectorCharacter::GetCurrentPower() const
 {
 	return CurrentPower;
 }
 
-void ABatteryCollectorCharacter::ChangePower(float PowerChange)
+void ABatteryCollectorCharacter::ChangePower(float changePower)
 {
-	CurrentPower += PowerChange;
+	CurrentPower += changePower;
 
 	// change speed based on power
 	auto characterMovement = GetCharacterMovement();
